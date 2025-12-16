@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大自然音乐会 - 评论区</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 自定义Tailwind配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nature: {
+              green: {
+                light: '#86efac',
+                DEFAULT: '#22c55e',
+                dark: '#16a34a'
+              },
+              brown: {
+                light: '#d6b88f',
+                DEFAULT: '#92400e',
+                dark: '#78350f'
+              },
+              earth: '#a8794f'
+            },
+            primary: '#16a34a',
+            secondary: '#92400e'
+          },
+          fontFamily: {
+            nature: ['Montserrat', 'sans-serif'],
+          }
+        },
+      }
+    }
+  </script>
+  
+  <!-- 自定义样式 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+      }
+      .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .comment-card {
+        @apply bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-nature-green;
+      }
+      .btn-primary {
+        @apply bg-nature-green hover:bg-nature-green-dark text-white font-medium py-2 px-6 rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-nature-green/50;
+      }
+      .input-field {
+        @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-nature-green focus:ring-2 focus:ring-nature-green/20 transition-all duration-300 outline-none;
+      }
+    }
+  </style>
+  
+  <!-- 引入Google字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-nature min-h-screen">
+  <!-- 背景层 - 使用新的大自然音乐会图片 -->
+  <div class="fixed inset-0 bg-cover bg-center opacity-90 -z-10" 
+       style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/db223e860d0d4966a5b6849c937dbef9.png~tplv-a9rns2rl98-24:720:720.png?rcl=20251216094735508BAA74E28B2E2C0C71&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1766454456&x-signature=C1rEJ8bs5CUHON7jdPEf8Fj28%2BU%3D');"></div>
+  <div class="fixed inset-0 bg-black/20 -z-10"></div>
+
+  <!-- 页面容器 -->
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- 标题区域 -->
+    <header class="text-center mb-12">
+      <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-white text-shadow mb-4">
+        大自然音乐会
+      </h1>
+      <p class="text-[clamp(1rem,2vw,1.25rem)] text-white text-shadow max-w-3xl mx-auto">
+        聆听自然的旋律，分享你的感受与体验，畅所欲言
+      </p>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- 评论输入区 (左侧/顶部) -->
+      <section class="lg:col-span-1 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-6 transform transition-all duration-500 hover:shadow-2xl">
+        <h2 class="text-2xl font-semibold text-nature-green-dark mb-4 flex items-center">
+          <i class="fa fa-comment-o mr-2"></i>我来创作
+        </h2>
+        
+        <form id="commentForm" class="space-y-4">
+          <!-- 昵称输入 -->
+          <div>
+            <label for="nickname" class="block text-sm font-medium text-gray-700 mb-1">
+              姓名 (选填)
+            </label>
+            <input 
+              type="text" 
+              id="nickname" 
+              class="input-field" 
+              placeholder="留下你的姓名"
+              maxlength="20"
+            >
+          </div>
+          
+          <!-- 我的片段 -->
+          <div>
+            <label for="commentContent" class="block text-sm font-medium text-gray-700 mb-1">
+              我的片段 <span class="text-red-500">*</span>
+            </label>
+            <textarea 
+              id="commentContent" 
+              class="input-field h-32 resize-none" 
+              placeholder="你还听过哪些“美妙的声音”？试着用上你积累的词句，这几句话和同学交流，如，“鸟儿是大自然的歌手……”“厨房是一个音乐厅……”。"
+              maxlength="500"
+              required
+            ></textarea>
+            <div class="text-right text-xs text-gray-500 mt-1">
+              <span id="charCount">0</span>/500
+            </div>
+          </div>
+          
+          <!-- 提交按钮 -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              class="btn-primary w-full flex justify-center items-center"
+            >
+              <i class="fa fa-paper-plane mr-2"></i>发布作品
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 评论展示区 (右侧/底部) -->
+      <section class="lg:col-span-2 bg-white/90 backdrop-blur-sm rounded-xl shadow-xl p-6 transform transition-all duration-500 hover:shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-semibold text-nature-green-dark flex items-center">
+            <i class="fa fa-comments-o mr-2"></i>我来点赞
+          </h2>
+          <div class="text-sm text-gray-600">
+            <span id="commentCount">0</span> 条评论
+          </div>
+        </div>
+        
+        <!-- 评论过滤器 -->
+        <div class="mb-6 flex flex-wrap gap-2">
+          <button class="filter-btn active px-3 py-1 rounded-full bg-nature-green text-white text-sm" data-filter="all">
+            全部评论
+          </button>
+          <button class="filter-btn px-3 py-1 rounded-full bg-gray-200 hover:bg-nature-green/20 text-sm transition-colors" data-filter="recent">
+            最新发布
+          </button>
+          <button class="filter-btn px-3 py-1 rounded-full bg-gray-200 hover:bg-nature-green/20 text-sm transition-colors" data-filter="popular">
+            热门评论
+          </button>
+        </div>
+        
+        <!-- 评论列表 -->
+        <div id="commentsList" class="space-y-4 max-h-[600px] overflow-y-auto scrollbar-hide pr-2">
+          <!-- 初始提示 -->
+          <div id="emptyState" class="text-center py-8 text-gray-500">
+            <i class="fa fa-comment-dots text-4xl mb-2 block"></i>
+            <p>暂无评论，快来发表第一条评论吧！</p>
+          </div>
+          
+          <!-- 评论会动态添加到这里 -->
+        </div>
+      </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="mt-12 text-center text-white/80 text-sm">
+      <p>© 2025 大自然音乐会 | 聆听自然的声音</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // 评论数据存储
+    let comments = JSON.parse(localStorage.getItem('natureConcertComments')) || [];
+    
+    // DOM 元素
+    const commentForm = document.getElementById('commentForm');
+    const nicknameInput = document.getElementById('nickname');
+    const commentContentInput = document.getElementById('commentContent');
+    const charCount = document.getElementById('charCount');
+    const commentsList = document.getElementById('commentsList');
+    const emptyState = document.getElementById('emptyState');
+    const commentCount = document.getElementById('commentCount');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    // 更新字符计数
+    commentContentInput.addEventListener('input', () => {
+      charCount.textContent = commentContentInput.value.length;
+    });
+    
+    // 格式化日期
+    function formatDate(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+      
+      if (diffInSeconds < 60) {
+        return `${diffInSeconds}秒前`;
+      } else if (diffInSeconds < 3600) {
+        return `${Math.floor(diffInSeconds / 60)}分钟前`;
+      } else if (diffInSeconds < 86400) {
+        return `${Math.floor(diffInSeconds / 3600)}小时前`;
+      } else {
+        return `${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // 渲染评论列表
+    function renderComments(filter = 'all') {
+      // 更新评论计数
+      commentCount.textContent = comments.length;
+      
+      // 显示/隐藏空状态
+      emptyState.style.display = comments.length === 0 ? 'block' : 'none';
+      
+      // 清空列表
+      commentsList.innerHTML = '';
+      
+      // 过滤评论
+      let filteredComments = [...comments];
+      if (filter === 'recent') {
+        filteredComments.sort((a, b) => b.timestamp - a.timestamp);
+      } else if (filter === 'popular') {
+        filteredComments.sort((a, b) => b.likes - a.likes);
+      }
+      
+      // 添加评论到列表
+      filteredComments.forEach((comment, index) => {
+        const commentCard = document.createElement('div');
+        commentCard.className = 'comment-card';
+        commentCard.setAttribute('data-id', comment.id);
+        
+        commentCard.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="font-semibold text-gray-800">${comment.nickname || '匿名用户'}</h3>
+            <span class="text-xs text-gray-500">${formatDate(comment.timestamp)}</span>
+          </div>
+          <p class="text-gray-700 mb-3">${comment.content.replace(/\n/g, '<br>')}</p>
+          <div class="flex justify-between items-center">
+            <div class="flex items-center">
+              <button class="like-btn text-gray-500 hover:text-nature-green transition-colors flex items-center text-sm" data-id="${comment.id}">
+                <i class="fa fa-heart-o mr-1 ${comment.userLiked ? 'fa-heart text-nature-green' : 'fa-heart-o'}"></i>
+                <span>${comment.likes}</span>
+              </button>
+            </div>
+            <button class="delete-btn text-gray-400 hover:text-red-500 transition-colors text-sm" data-id="${comment.id}">
+              <i class="fa fa-trash-o"></i> 删除
+            </button>
+          </div>
+        `;
+        
+        commentsList.appendChild(commentCard);
+      });
+      
+      // 添加点赞和删除事件监听
+      addCommentEventListeners();
+    }
+    
+    // 添加评论事件监听
+    function addCommentEventListeners() {
+      // 点赞按钮
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const commentId = e.currentTarget.getAttribute('data-id');
+          const commentIndex = comments.findIndex(c => c.id === commentId);
+          
+          if (commentIndex !== -1) {
+            if (comments[commentIndex].userLiked) {
+              comments[commentIndex].likes--;
+            } else {
+              comments[commentIndex].likes++;
+            }
+            comments[commentIndex].userLiked = !comments[commentIndex].userLiked;
+            
+            // 保存到本地存储并重新渲染
+            localStorage.setItem('natureConcertComments', JSON.stringify(comments));
+            renderComments(document.querySelector('.filter-btn.active').getAttribute('data-filter'));
+          }
+        });
+      });
+      
+      // 删除按钮
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (confirm('确定要删除这条评论吗？')) {
+            const commentId = e.currentTarget.getAttribute('data-id');
+            comments = comments.filter(c => c.id !== commentId);
+            
+            // 保存到本地存储并重新渲染
+            localStorage.setItem('natureConcertComments', JSON.stringify(comments));
+            renderComments(document.querySelector('.filter-btn.active').getAttribute('data-filter'));
+          }
+        });
+      });
+    }
+    
+    // 提交评论
+    commentForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const nickname = nicknameInput.value.trim() || '';
+      const content = commentContentInput.value.trim();
+      
+      if (!content) {
+        alert('请输入评论内容');
+        return;
+      }
+      
+      // 创建新评论
+      const newComment = {
+        id: Date.now().toString(),
+        nickname: nickname,
+        content: content,
+        timestamp: Date.now(),
+        likes: 0,
+        userLiked: false
+      };
+      
+      // 添加到评论列表
+      comments.unshift(newComment);
+      
+      // 保存到本地存储
+      localStorage.setItem('natureConcertComments', JSON.stringify(comments));
+      
+      // 重置表单
+      commentForm.reset();
+      charCount.textContent = '0';
+      
+      // 重新渲染评论
+      renderComments(document.querySelector('.filter-btn.active').getAttribute('data-filter'));
+      
+      // 滚动到第一条评论
+      commentsList.scrollTop = 0;
+      
+      // 显示成功提示
+      alert('评论发布成功！');
+    });
+    
+    // 过滤按钮事件
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // 移除所有活跃状态
+        filterButtons.forEach(b => {
+          b.classList.remove('active', 'bg-nature-green', 'text-white');
+          b.classList.add('bg-gray-200', 'hover:bg-nature-green/20');
+        });
+        
+        // 添加活跃状态
+        btn.classList.add('active', 'bg-nature-green', 'text-white');
+        btn.classList.remove('bg-gray-200', 'hover:bg-nature-green/20');
+        
+        // 渲染对应过滤的评论
+        renderComments(btn.getAttribute('data-filter'));
+      });
+    });
+    
+    // 页面加载时渲染评论
+    document.addEventListener('DOMContentLoaded', () => {
+      renderComments('all');
+    });
+  </script>
+</body>
+</html>
